@@ -21,7 +21,7 @@ steps:
     args:
       - -c
       - |
-        npm run build
+        npm run build-only
     volumes:
       - name: "npm-cache"
         path: /root/.npm
