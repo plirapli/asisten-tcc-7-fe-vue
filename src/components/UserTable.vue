@@ -2,6 +2,7 @@
 import { defineProps } from "vue";
 import { TableCell, TableRow } from "./ui/table";
 import UserDelete from "./UserDelete.vue";
+import UserEdit from "./UserEdit.vue";
 
 defineProps({
   user: {
@@ -10,7 +11,7 @@ defineProps({
   },
   i: Number,
 });
-const emit = defineEmits(["item-deleted"]);
+const emit = defineEmits(["item-edit", "item-deleted"]);
 </script>
 
 <template>
@@ -21,7 +22,7 @@ const emit = defineEmits(["item-deleted"]);
     <TableCell>{{ user.gender }}</TableCell>
     <TableCell>
       <div class="flex gap-1.5">
-        <!-- <EditUser setIsGet="{setIsGet}" user="{user}" /> -->
+        <UserEdit :user="user" @item-edit="$emit('item-edit', $event)" />
         <UserDelete
           :user="user"
           @item-deleted="$emit('item-deleted', $event)"

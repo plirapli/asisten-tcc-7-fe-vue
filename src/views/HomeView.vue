@@ -15,9 +15,38 @@ import router from "@/router";
 import { LogOutIcon } from "lucide-vue-next";
 import { onMounted, ref } from "vue";
 
-const users = ref([]);
+interface User {
+  id: number;
+  name: string;
+  email?: string;
+  gender?: string;
+}
+
+interface EditEvent {
+  id: number;
+  [key: string]: unknown;
+}
+
+const users = ref<User[]>([]);
 const msg = ref("");
 const isLoading = ref(true);
+
+const handleEdit = (event: EditEvent) => {
+  const index = users.value.findIndex(
+    (user: { id: number }) => user.id === event.id
+  );
+
+  if (index !== -1) {
+    users.value[index] = {
+      ...users.value[index],
+      ...event,
+    };
+  }
+};
+
+const handleItemDeleted = (deletedId: Number) => {
+  users.value = users.value.filter((user) => user["id"] !== deletedId);
+};
 
 const logoutHandler = async () => {
   try {
@@ -27,10 +56,6 @@ const logoutHandler = async () => {
   } catch (error: any) {
     console.error(error?.response?.data || error.message);
   }
-};
-
-const handleItemDeleted = (deletedId: Number) => {
-  users.value = users.value.filter((user) => user["id"] !== deletedId);
 };
 
 onMounted(async () => {
@@ -82,8 +107,9 @@ onMounted(async () => {
           <UserTable
             v-else
             v-for="(user, i) in users"
-            :key="user"
+            :key="user.id"
             :user="user"
+            @item-edit="handleEdit"
             @item-deleted="handleItemDeleted"
             :i="i + 1"
           />
