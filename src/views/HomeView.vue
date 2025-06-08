@@ -18,7 +18,6 @@ import { onMounted, ref } from "vue";
 const users = ref([]);
 const msg = ref("");
 const isLoading = ref(true);
-const isGet = ref(true);
 
 const logoutHandler = async () => {
   try {
@@ -28,6 +27,10 @@ const logoutHandler = async () => {
   } catch (error: any) {
     console.error(error?.response?.data || error.message);
   }
+};
+
+const handleItemDeleted = (deletedId: Number) => {
+  users.value = users.value.filter((user) => user["id"] !== deletedId);
 };
 
 onMounted(async () => {
@@ -81,6 +84,7 @@ onMounted(async () => {
             v-for="(user, i) in users"
             :key="user"
             :user="user"
+            @item-deleted="handleItemDeleted"
             :i="i + 1"
           />
         </TableBody>
