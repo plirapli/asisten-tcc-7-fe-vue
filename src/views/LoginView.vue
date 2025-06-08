@@ -60,7 +60,7 @@ const loginHandler = async () => {
                   id="email"
                   v-model="state.form.email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder="mido@parasol.com"
                   required
                 />
               </div>
